@@ -1,0 +1,35 @@
+[gd_scene load_steps=6 format=3 uid="uid://bwrhcb2e55dd0"]
+
+[ext_resource type="Texture2D" uid="uid://jhtar6gct8ju" path="res://assets/materials/secret_floor.jpg" id="1_ad6l4"]
+[ext_resource type="Script" uid="uid://di5d18pcfrq0a" path="res://scripts/World/Dirtpatch.cs" id="1_q3v31"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_q3v31"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_8ija3"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yrk27"]
+albedo_texture = ExtResource("1_ad6l4")
+uv1_scale = Vector3(-8.735, -8.735, -8.735)
+uv1_offset = Vector3(-0.25, 0, 0)
+
+[node name="DirtPatch" type="Node3D" node_paths=PackedStringArray("interactLabel")]
+script = ExtResource("1_q3v31")
+interactLabel = NodePath("DirtPatchBody/Label3D")
+
+[node name="DirtPatchBody" type="StaticBody3D" parent="."]
+transform = Transform3D(2.5, 0, 0, 0, 0.5, 0, 0, 0, 2.5, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DirtPatchBody"]
+transform = Transform3D(5, 0, 0, 0, 0.5, 0, 0, 0, 5, 0, 0, 0)
+shape = SubResource("BoxShape3D_q3v31")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="DirtPatchBody"]
+transform = Transform3D(5, 0, 0, 0, 0.5, 0, 0, 0, 5, 0, 0, 0)
+mesh = SubResource("BoxMesh_8ija3")
+surface_material_override/0 = SubResource("StandardMaterial3D_yrk27")
+
+[node name="Label3D" type="Label3D" parent="DirtPatchBody"]
+transform = Transform3D(2, 0, 0, 0, 10, 0, 0, 0, 2, 0.354506, 4.94764, 0.651739)
+visible = false
+billboard = 1
+text = "Press F to water this Dirt Patch!"
