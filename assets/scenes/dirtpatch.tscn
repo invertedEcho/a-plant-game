@@ -1,35 +1,59 @@
 [gd_scene load_steps=6 format=3 uid="uid://bwrhcb2e55dd0"]
 
-[ext_resource type="Texture2D" uid="uid://jhtar6gct8ju" path="res://assets/materials/secret_floor.jpg" id="1_ad6l4"]
 [ext_resource type="Script" uid="uid://di5d18pcfrq0a" path="res://scripts/World/Dirtpatch.cs" id="1_q3v31"]
+[ext_resource type="ArrayMesh" uid="uid://cfoly6o2pjd8q" path="res://assets/models/nature/WoodLog_Moss.obj" id="2_q3v31"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_q3v31"]
 
-[sub_resource type="BoxMesh" id="BoxMesh_8ija3"]
+[sub_resource type="BoxMesh" id="BoxMesh_q3v31"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yrk27"]
-albedo_texture = ExtResource("1_ad6l4")
-uv1_scale = Vector3(-8.735, -8.735, -8.735)
-uv1_offset = Vector3(-0.25, 0, 0)
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8ija3"]
+albedo_color = Color(1, 1, 1, 0)
 
-[node name="DirtPatch" type="Node3D" node_paths=PackedStringArray("interactLabel")]
+[node name="DirtPatch" type="Node3D" node_paths=PackedStringArray("interactLabel", "groundDirtPatch")]
 script = ExtResource("1_q3v31")
 interactLabel = NodePath("DirtPatchBody/Label3D")
+groundDirtPatch = NodePath("DirtPatchBody/MeshInstance3D")
 
 [node name="DirtPatchBody" type="StaticBody3D" parent="."]
-transform = Transform3D(2.5, 0, 0, 0, 0.5, 0, 0, 0, 2.5, 0, 0, 0)
+transform = Transform3D(1.5, 0, 0, 0, 0.5, 0, 0, 0, 1.5, 0, 0, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="DirtPatchBody"]
 transform = Transform3D(5, 0, 0, 0, 0.5, 0, 0, 0, 5, 0, 0, 0)
 shape = SubResource("BoxShape3D_q3v31")
+debug_fill = false
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="DirtPatchBody"]
 transform = Transform3D(5, 0, 0, 0, 0.5, 0, 0, 0, 5, 0, 0, 0)
-mesh = SubResource("BoxMesh_8ija3")
-surface_material_override/0 = SubResource("StandardMaterial3D_yrk27")
+visible = false
+mesh = SubResource("BoxMesh_q3v31")
+surface_material_override/0 = SubResource("StandardMaterial3D_8ija3")
 
 [node name="Label3D" type="Label3D" parent="DirtPatchBody"]
 transform = Transform3D(2, 0, 0, 0, 10, 0, 0, 0, 2, 0.354506, 4.94764, 0.651739)
-visible = false
 billboard = 1
 text = "Press F to water this Dirt Patch!"
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
+transform = Transform3D(0.0924746, 0, -2.43825, 0, 2.44, 0, 2.43825, 0, 0.0924746, 0, 0, 3.14344)
+mesh = ExtResource("2_q3v31")
+
+[node name="StaticBody3D2" type="StaticBody3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D2"]
+transform = Transform3D(-0.0381759, 0, -2.6288, 0, 2.62908, 0, 2.6288, 0, -0.0381759, -0.00204396, -0.297842, -3.16828)
+mesh = ExtResource("2_q3v31")
+
+[node name="StaticBody3D3" type="StaticBody3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D3"]
+transform = Transform3D(2.43971, 0, 0, 0, 2.43971, 0, 0, 0, 2.43971, -3.05655, -0.250745, 0.43177)
+mesh = ExtResource("2_q3v31")
+
+[node name="StaticBody3D4" type="StaticBody3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D4"]
+transform = Transform3D(2.6557, 0, 0, 0, 2.6557, 0, 0, 0, 2.6557, 3.51943, -0.234559, 0.449615)
+mesh = ExtResource("2_q3v31")

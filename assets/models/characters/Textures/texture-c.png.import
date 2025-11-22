@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://jhtar6gct8ju"
-path.s3tc="res://.godot/imported/secret_floor.jpg-983549c08a4747e7bc69b06f07dcdf9c.s3tc.ctex"
+uid="uid://2ogh3irp7i0p"
+path.s3tc="res://.godot/imported/texture-c.png-c8b605aba105e5c1cc0b56d2ade0c9ff.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://assets/materials/secret_floor.jpg"
-dest_files=["res://.godot/imported/secret_floor.jpg-983549c08a4747e7bc69b06f07dcdf9c.s3tc.ctex"]
+source_file="res://assets/models/characters/Textures/texture-c.png"
+dest_files=["res://.godot/imported/texture-c.png-c8b605aba105e5c1cc0b56d2ade0c9ff.s3tc.ctex"]
 
 [params]
 

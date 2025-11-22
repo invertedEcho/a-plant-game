@@ -1,12 +1,13 @@
-[gd_scene load_steps=11 format=3 uid="uid://6ye6v48133nk"]
+[gd_scene load_steps=12 format=3 uid="uid://6ye6v48133nk"]
 
 [ext_resource type="Script" uid="uid://dwh4te3qryprb" path="res://scripts/Player/Player.cs" id="1_gagv8"]
 [ext_resource type="Script" uid="uid://dial8v0hrborf" path="res://scripts/World/World.cs" id="1_u44wh"]
 [ext_resource type="Script" uid="uid://rlnwok4wt4pf" path="res://scripts/Player/PlayerCamera.cs" id="2_u44wh"]
-[ext_resource type="Texture2D" uid="uid://b0m0u0c4prwaj" path="res://assets/materials/francegrassfull.jpg" id="3_gagv8"]
+[ext_resource type="Texture2D" uid="uid://whoeyc2k5fpa" path="res://assets/textures/dirty_1.png" id="4_eqalh"]
 [ext_resource type="PackedScene" uid="uid://bwrhcb2e55dd0" path="res://assets/scenes/dirtpatch.tscn" id="5_eqalh"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_0f027"]
+radius = 0.7
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_0f027"]
 
@@ -14,22 +15,23 @@
 
 [sub_resource type="BoxMesh" id="BoxMesh_8mm7a"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hq1ik"]
-albedo_texture = ExtResource("3_gagv8")
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vo808"]
+albedo_texture = ExtResource("4_eqalh")
 metallic_specular = 0.0
-uv1_scale = Vector3(48.085, 48.085, 48.085)
-uv1_offset = Vector3(3.31, 0, 0)
-uv2_triplanar = true
+uv1_scale = Vector3(20, 20, 20)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_eqalh"]
 
 [node name="MainScene" type="Node3D"]
 script = ExtResource("1_u44wh")
 
 [node name="Player" type="CharacterBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.36007, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.75213, 0)
 axis_lock_angular_z = true
 script = ExtResource("1_gagv8")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 1.595, 0, 0, 0, 1, 0, 0, 0)
 shape = SubResource("CapsuleShape3D_0f027")
 
 [node name="PlayerCamera" type="Camera3D" parent="Player"]
@@ -49,10 +51,14 @@ shape = SubResource("BoxShape3D_d5x1h")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Ground"]
 transform = Transform3D(50, 0, 0, 0, 1, 0, 0, 0, 50, 0, 0, 0)
 mesh = SubResource("BoxMesh_8mm7a")
-surface_material_override/0 = SubResource("StandardMaterial3D_hq1ik")
+surface_material_override/0 = SubResource("StandardMaterial3D_vo808")
 
 [node name="SunLight" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.216941, -0.928851, -0.300286, 0.876541, 0.0499567, 0.478728, -0.429666, -0.367069, 0.825014, 0, 17.8696, 0)
 
 [node name="DirtPatch" parent="." instance=ExtResource("5_eqalh")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.5253, 0.391059, 9.91312)
+
+[node name="NPC" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.0364, 0.74299, 1.51359)
+mesh = SubResource("CapsuleMesh_eqalh")

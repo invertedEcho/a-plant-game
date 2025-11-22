@@ -1,0 +1,25 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://b1ule87rg7t71"
+path="res://.godot/imported/Cactus_2.obj-366e41db117276319eac46945544e97a.mesh"
+
+[deps]
+
+files=["res://.godot/imported/Cactus_2.obj-366e41db117276319eac46945544e97a.mesh"]
+
+source_file="res://assets/models/nature/cactus/Cactus_2.obj"
+dest_files=["res://.godot/imported/Cactus_2.obj-366e41db117276319eac46945544e97a.mesh", "res://.godot/imported/Cactus_2.obj-366e41db117276319eac46945544e97a.mesh"]
+
+[params]
+
+generate_tangents=true
+generate_lods=true
+generate_shadow_mesh=true
+generate_lightmap_uv2=false
+generate_lightmap_uv2_texel_size=0.2
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+force_disable_mesh_compression=false
