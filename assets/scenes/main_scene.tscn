@@ -92,15 +92,24 @@ transform = Transform3D(0.216941, -0.928851, -0.300286, 0.876541, 0.0499567, 0.4
 [node name="GrowPlot" parent="." instance=ExtResource("5_eqalh")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.5253, 0.391059, 9.91312)
 
-[node name="UiRoot" type="Control" parent="." node_paths=PackedStringArray("CurrentObjectiveLabel", "InteractLabel", "CoinsLabel")]
+[node name="UiRoot" type="Control" parent="." node_paths=PackedStringArray("CurrentObjectiveLabel", "InteractLabel", "CoinsLabel", "InventorySlot1", "InventorySlot2", "InventorySlot3", "InventorySlot4", "InventorySlot5", "InventorySlot6", "InventorySlot7", "InventorySlot8")]
 layout_mode = 3
 anchors_preset = 0
+offset_top = -3.0
 offset_right = 40.0
-offset_bottom = 40.0
+offset_bottom = 37.0
 script = ExtResource("6_vo808")
 CurrentObjectiveLabel = NodePath("MarginContainer/VBoxContainer/CurrentObjectiveLabel")
 InteractLabel = NodePath("InteractLabel")
 CoinsLabel = NodePath("MarginContainer/VBoxContainer/HBoxContainer/CoinsLabel")
+InventorySlot1 = NodePath("HotbarInventory/InventorySlot1")
+InventorySlot2 = NodePath("HotbarInventory/InventorySlot2")
+InventorySlot3 = NodePath("HotbarInventory/InventorySlot3")
+InventorySlot4 = NodePath("HotbarInventory/InventorySlot4")
+InventorySlot5 = NodePath("HotbarInventory/InventorySlot5")
+InventorySlot6 = NodePath("HotbarInventory/InventorySlot6")
+InventorySlot7 = NodePath("HotbarInventory/InventorySlot7")
+InventorySlot8 = NodePath("HotbarInventory/InventorySlot8")
 
 [node name="MarginContainer" type="MarginContainer" parent="UiRoot"]
 layout_mode = 0
@@ -135,13 +144,62 @@ offset_right = 666.0
 offset_bottom = 565.0
 text = "Press (F) to water this dirt patch"
 
-[node name="TextureRect" type="TextureRect" parent="UiRoot"]
+[node name="HotbarInventory" type="TextureRect" parent="UiRoot"]
 layout_mode = 0
-offset_left = 443.0
-offset_top = 578.0
-offset_right = 700.0
-offset_bottom = 618.0
+offset_left = 377.0
+offset_top = 582.0
+offset_right = 710.0
+offset_bottom = 622.0
 texture = ExtResource("14_wtluq")
+
+[node name="InventorySlot1" type="TextureRect" parent="UiRoot/HotbarInventory"]
+layout_mode = 0
+offset_left = 1.0
+offset_right = 41.0
+offset_bottom = 40.0
+
+[node name="InventorySlot2" type="TextureRect" parent="UiRoot/HotbarInventory"]
+layout_mode = 0
+offset_left = 42.0
+offset_right = 82.0
+offset_bottom = 40.0
+
+[node name="InventorySlot3" type="TextureRect" parent="UiRoot/HotbarInventory"]
+layout_mode = 0
+offset_left = 83.0
+offset_top = 1.0
+offset_right = 123.0
+offset_bottom = 41.0
+
+[node name="InventorySlot4" type="TextureRect" parent="UiRoot/HotbarInventory"]
+layout_mode = 0
+offset_left = 125.0
+offset_right = 165.0
+offset_bottom = 40.0
+
+[node name="InventorySlot5" type="TextureRect" parent="UiRoot/HotbarInventory"]
+layout_mode = 0
+offset_left = 167.0
+offset_right = 207.0
+offset_bottom = 40.0
+
+[node name="InventorySlot6" type="TextureRect" parent="UiRoot/HotbarInventory"]
+layout_mode = 0
+offset_left = 207.0
+offset_right = 247.0
+offset_bottom = 40.0
+
+[node name="InventorySlot7" type="TextureRect" parent="UiRoot/HotbarInventory"]
+layout_mode = 0
+offset_left = 249.0
+offset_right = 289.0
+offset_bottom = 40.0
+
+[node name="InventorySlot8" type="TextureRect" parent="UiRoot/HotbarInventory"]
+layout_mode = 0
+offset_left = 291.0
+offset_right = 331.0
+offset_bottom = 40.0
 
 [node name="Shop" parent="." instance=ExtResource("8_0ft0v")]
 transform = Transform3D(3.491015, 0, 3.5794997, 0, 5.0000005, 0, -3.5794997, 0, 3.491015, 18.534254, 0.648015, -18.451683)

@@ -12,7 +12,6 @@ public partial class GameManager : Node
     }
 
     public GameObjective CurrentObjective { get; set; } = GameObjective.GrowFirstPlant;
-    public int CoinCount { get; set; } = 0;
 
     public override void _Ready()
     {
@@ -43,11 +42,5 @@ public partial class GameManager : Node
                 break;
         }
         return currentObjectiveText;
-    }
-
-    public void AddCoin(int toAdd)
-    {
-        this.CoinCount += toAdd;
-        UiManager.Instance.CoinsLabel.Text = CoinCount.ToString();
     }
 }

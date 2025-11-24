@@ -15,6 +15,30 @@ public partial class UiManager : Control
     [Export]
     public Label CoinsLabel { get; set; }
 
+    [Export]
+    public TextureRect InventorySlot1;
+
+    [Export]
+    public TextureRect InventorySlot2;
+
+    [Export]
+    public TextureRect InventorySlot3;
+
+    [Export]
+    public TextureRect InventorySlot4;
+
+    [Export]
+    public TextureRect InventorySlot5;
+
+    [Export]
+    public TextureRect InventorySlot6;
+
+    [Export]
+    public TextureRect InventorySlot7;
+
+    [Export]
+    public TextureRect InventorySlot8;
+
     public override void _Ready()
     {
         Instance = this;

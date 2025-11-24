@@ -119,8 +119,15 @@ public partial class GrowPlot : Node3D
                 UiManager.Instance.InteractLabel.Text = "Press (F) to harvest this plant";
                 break;
             case PlantState.ReadyToHarvest:
-                // TODO: remove the plant and add it to users inventory
-                GD.Print("TODO: remove the plant and add it to users inventory");
+                growPlotState = GrowPlotState.Dry;
+                plantState = PlantState.YoungPlant;
+                plantModel.Mesh = null;
+                GameItem gameItem = new GameItem { BuyPrice = GameConstants.CactusBuyPrize, DescriptionName = "Cactus", PathToTexture = "res://assets/", SellPrice = GameConstants.CactusSellPrize, IsPlaceHolder = false };
+                bool result = Player.Instance.AppendItemToInventory(gameItem);
+                if (!result)
+                {
+                    GD.Print("couldnt add item to inventory, inventory already full. what to do now?");
+                }
                 break;
         }
     }
@@ -134,7 +141,7 @@ public partial class GrowPlot : Node3D
             case PlantState.AgedPlant:
                 return "res://assets/models/nature/cactus/Cactus_2.obj";
             case PlantState.ReadyToHarvest:
-                return "res://assets/models/nature/cactus/CactusFlowers_2.obj";
+                return "res://assets/models/nature/cactus/CactusFlowers_2.fbx";
             default: return "";
         }
     }

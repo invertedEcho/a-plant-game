@@ -27,3 +27,7 @@ We don't want to overscope at first, so:
 - when they are done growing, a npc arrives and wants to buy the plant
 - you have to sell it to him and you get coins
 - be able to buy new plots for plants and have different types of plants
+
+## Assets
+
+- 3D Models: Please use `glb` format if possible
