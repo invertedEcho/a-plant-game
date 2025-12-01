@@ -2,7 +2,7 @@ using Godot;
 using Godot.Collections;
 
 public partial class Player : CharacterBody3D {
-    Camera3D playerCamera;
+    PlayerCamera playerCamera;
     private int _speed = 15;
     private float _jumpVelocity = 10.0f;
 
@@ -17,7 +17,7 @@ public partial class Player : CharacterBody3D {
 
     public override void _Ready() {
         Instance = this;
-        playerCamera = (Camera3D)GetNode("PlayerCamera");
+        playerCamera = (PlayerCamera)GetNode("PlayerCamera");
         Inventory.Add(new GameItem { IsPlaceHolder = true });
         Inventory.Add(new GameItem { IsPlaceHolder = true });
         Inventory.Add(new GameItem { IsPlaceHolder = true });
@@ -29,6 +29,7 @@ public partial class Player : CharacterBody3D {
     }
 
     public void HandleMovementInput() {
+        if (playerCamera.freeCamEnabled) return;
         Vector3 localVelocity = new Vector3(0.0f, 0.0f, 0.0f);
 
         if (Input.IsActionPressed("move_left")) {
@@ -118,6 +119,5 @@ public partial class Player : CharacterBody3D {
 
         Inventory[index] = new GameItem { IsPlaceHolder = true };
         return true;
-
     }
 }

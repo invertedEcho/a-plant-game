@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://dal3wm13q25t8"]
+
+[ext_resource type="PackedScene" uid="uid://ccxx88uk6wcfw" path="res://assets/models/nature/Pine.glb" id="1_itajj"]
+[ext_resource type="ArrayMesh" uid="uid://dt3u8f45dpnk5" path="res://assets/models/nature/pine_tree_mesh.tres" id="2_c77vg"]
+
+[node name="Root Scene" instance=ExtResource("1_itajj")]
+
+[node name="Pine_2" type="MeshInstance3D" parent="." index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, -1.6292067e-07, 0, 1.6292067e-07, 1, 0, 0, 0)
+mesh = ExtResource("2_c77vg")
+skeleton = NodePath("")

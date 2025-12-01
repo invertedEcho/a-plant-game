@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://blnrxo2pfv3rb"]
+
+[ext_resource type="PackedScene" uid="uid://b24d62rmsegej" path="res://assets/maps/main.glb" id="1_ypxwc"]
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_betll"]
+data = PackedVector3Array(-0.5768, 0, 0.5768, 0.5768, 0, -0.5768, 0.5768, 0, 0.5768, -0.5768, 0, 0.5768, -0.5768, 0, -0.5768, 0.5768, 0, -0.5768)
+
+[node name="World" instance=ExtResource("1_ypxwc")]
+
+[node name="Plane" parent="." index="0"]
+transform = Transform3D(100, 0, 0, 0, 1, 0, 0, 0, 100, 0, 0, 0)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Plane" index="0"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Plane/StaticBody3D" index="0"]
+shape = SubResource("ConcavePolygonShape3D_betll")

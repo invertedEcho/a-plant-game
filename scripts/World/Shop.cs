@@ -18,7 +18,7 @@ public partial class Shop : Node3D {
     }
 
     private void OnBodyEntered(Node3D body) {
-        if (GameManager.Instance.CurrentObjective != GameManager.GameObjective.SellFirstPlant) {
+        if (GameManager.Instance.CurrentObjective == GameManager.GameObjective.GrowFirstPlant) {
             return;
         }
 

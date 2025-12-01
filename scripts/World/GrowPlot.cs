@@ -47,7 +47,6 @@ public partial class GrowPlot : Node3D {
 
     private void OnBodyEntered(Node3D body) {
         if (!body.IsInGroup("player")) return;
-        GD.Print($"body has entered dirtpatch range! {body}");
         playerInRange = true;
         UiManager.Instance.InteractLabel.Visible = true;
         UiManager.Instance.InteractLabel.Text = GetTextForInteractLabel(growPlotState);
@@ -79,10 +78,8 @@ public partial class GrowPlot : Node3D {
                 growPlotState = GrowPlotState.HasPlant;
                 plantState = PlantState.YoungPlant;
 
-                string cactusModelPath = GetModelPathForCactusByPlantState(plantState);
-                PackedScene plantScene = GD.Load<PackedScene>(cactusModelPath);
-                Node3D plantModel = plantScene.Instantiate<Node3D>();
-                AddChild(plantModel);
+                string plantModelPath = GetModelPathForCactusByPlantState(plantState);
+                UpdatePlantModel(plantModelPath);
 
                 string interactLabelText = "Press (F) to make this Young Plant an Aged Plant";
                 UiManager.Instance.InteractLabel.Text = interactLabelText;
@@ -92,21 +89,12 @@ public partial class GrowPlot : Node3D {
 
         if (growPlotState != GrowPlotState.HasPlant) return;
 
-        // free the model so we can add new plant model
-        if (plantModel != null) {
-            GD.Print("freeing plant model");
-            this.plantModel.Free();
-        }
-
         switch (plantState) {
             case PlantState.YoungPlant: {
                     plantState = PlantState.AgedPlant;
 
                     string plantModelPath = GetModelPathForCactusByPlantState(plantState);
-                    PackedScene plantScene = (PackedScene)GD.Load(plantModelPath);
-                    this.plantModel = plantScene.Instantiate<Node3D>();
-                    GD.Print("adding new plant model");
-                    AddChild(this.plantModel);
+                    UpdatePlantModel(plantModelPath);
 
                     UiManager.Instance.InteractLabel.Text = "Press (F) to make this plant ready to harvest";
                     break;
@@ -115,15 +103,17 @@ public partial class GrowPlot : Node3D {
                     plantState = PlantState.ReadyToHarvest;
 
                     string plantModelPath = GetModelPathForCactusByPlantState(plantState);
-                    PackedScene plantScene = (PackedScene)GD.Load(plantModelPath);
-                    this.plantModel = plantScene.Instantiate<Node3D>();
-                    GD.Print("adding new plant model");
-                    AddChild(plantModel);
+                    UpdatePlantModel(plantModelPath);
 
                     UiManager.Instance.InteractLabel.Text = "Press (F) to harvest this plant";
                     break;
                 }
             case PlantState.ReadyToHarvest: {
+                    GD.Print("harvesting plant and freeing model");
+                    if (plantModel != null) {
+                        plantModel.Free();
+                    }
+
                     growPlotState = GrowPlotState.Dry;
                     plantState = PlantState.YoungPlant;
 
@@ -167,4 +157,13 @@ public partial class GrowPlot : Node3D {
         }
     }
 
+    // in the future, we probably want one model that contains the different stages, because this is overhead
+    private void UpdatePlantModel(string pathToNewGlbModel) {
+        if (plantModel != null) {
+            plantModel.Free();
+        }
+        PackedScene scene = GD.Load<PackedScene>(pathToNewGlbModel);
+        Node3D node = scene.Instantiate<Node3D>();
+        AddChild(node);
+    }
 }

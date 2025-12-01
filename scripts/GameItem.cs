@@ -1,7 +1,6 @@
 using Godot;
 
-public partial class GameItem : GodotObject
-{
+public partial class GameItem : GodotObject {
     public string DescriptionName;
     public string PathToTexture;
     public int SellPrice;

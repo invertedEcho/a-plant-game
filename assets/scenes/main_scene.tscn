@@ -3,12 +3,23 @@
 [ext_resource type="Script" uid="uid://dwh4te3qryprb" path="res://scripts/Player/Player.cs" id="1_gagv8"]
 [ext_resource type="Script" uid="uid://dial8v0hrborf" path="res://scripts/World/World.cs" id="1_u44wh"]
 [ext_resource type="Script" uid="uid://rlnwok4wt4pf" path="res://scripts/Player/PlayerCamera.cs" id="2_u44wh"]
-[ext_resource type="Texture2D" uid="uid://whoeyc2k5fpa" path="res://assets/textures/dirty_1.png" id="4_eqalh"]
-[ext_resource type="PackedScene" uid="uid://bwrhcb2e55dd0" path="res://assets/scenes/dirtpatch.tscn" id="5_eqalh"]
 [ext_resource type="Script" uid="uid://ba25aw8p04s6h" path="res://scripts/UiManager.cs" id="6_vo808"]
 [ext_resource type="Texture2D" uid="uid://bnyluoesw5f0f" path="res://assets/hud/coin.png" id="7_4v045"]
 [ext_resource type="PackedScene" uid="uid://c23501e3bb6dg" path="res://assets/scenes/shop.tscn" id="8_0ft0v"]
+[ext_resource type="PackedScene" uid="uid://dgs4yhglem7hx" path="res://assets/scenes/grow_plot.tscn" id="9_702vk"]
+[ext_resource type="PackedScene" uid="uid://lwuldjtnyasv" path="res://assets/scenes/terrain.tscn" id="9_yecn6"]
 [ext_resource type="Texture2D" uid="uid://bdpur6v01bt6l" path="res://assets/hud/hotbar.png" id="14_wtluq"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_702vk"]
+
+[sub_resource type="Sky" id="Sky_yecn6"]
+sky_material = SubResource("ProceduralSkyMaterial_702vk")
+
+[sub_resource type="Environment" id="Environment_supws"]
+background_mode = 2
+sky = SubResource("Sky_yecn6")
+ambient_light_sky_contribution = 0.85
+tonemap_exposure = 0.65
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_0f027"]
 radius = 0.7
@@ -16,21 +27,14 @@ height = 3.6
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_0f027"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_d5x1h"]
-size = Vector3(50, 1, 50)
-
-[sub_resource type="BoxMesh" id="BoxMesh_8mm7a"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vo808"]
-albedo_texture = ExtResource("4_eqalh")
-metallic_specular = 0.0
-uv1_scale = Vector3(20, 20, 20)
-
 [node name="World" type="Node3D"]
 script = ExtResource("1_u44wh")
 
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_supws")
+
 [node name="Player" type="CharacterBody3D" parent="." groups=["player"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.75213, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7.7947855, 0)
 axis_lock_angular_z = true
 script = ExtResource("1_gagv8")
 
@@ -39,27 +43,15 @@ shape = SubResource("CapsuleShape3D_0f027")
 
 [node name="PlayerCamera" type="Camera3D" parent="Player"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.632436, 0)
+current = true
 script = ExtResource("2_u44wh")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Player"]
 mesh = SubResource("CapsuleMesh_0f027")
 skeleton = NodePath("")
 
-[node name="Ground" type="StaticBody3D" parent="."]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground"]
-shape = SubResource("BoxShape3D_d5x1h")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Ground"]
-transform = Transform3D(50, 0, 0, 0, 1, 0, 0, 0, 50, -0.03878975, 0.036037445, -0.0064888)
-mesh = SubResource("BoxMesh_8mm7a")
-surface_material_override/0 = SubResource("StandardMaterial3D_vo808")
-
 [node name="SunLight" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.216941, -0.928851, -0.300286, 0.876541, 0.0499567, 0.478728, -0.429666, -0.367069, 0.825014, 0, 17.8696, 0)
-
-[node name="GrowPlot" parent="." instance=ExtResource("5_eqalh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.5253, 0.391059, 9.91312)
+transform = Transform3D(0.21694095, -0.92885137, -0.30028638, 0.12379606, -0.27895105, 0.9522925, -0.9683032, -0.24376553, 0.054472238, 0, 21.900164, 0)
 
 [node name="UiRoot" type="Control" parent="." node_paths=PackedStringArray("CurrentObjectiveLabel", "InteractLabel", "CoinsLabel", "InventorySlot1", "InventorySlot2", "InventorySlot3", "InventorySlot4", "InventorySlot5", "InventorySlot6", "InventorySlot7", "InventorySlot8")]
 layout_mode = 3
@@ -179,4 +171,9 @@ offset_bottom = 40.0
 expand_mode = 1
 
 [node name="Shop" parent="." instance=ExtResource("8_0ft0v")]
-transform = Transform3D(3.491015, 0, 3.5794997, 0, 5.0000005, 0, -3.5794997, 0, 3.491015, 18.534254, 0.648015, -18.451683)
+transform = Transform3D(3.491015, 0, 3.5794997, 0, 5.0000005, 0, -3.5794997, 0, 3.491015, 6.6425257, 0.6586189, -17.628967)
+
+[node name="GrowPlot2" parent="." instance=ExtResource("9_702vk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.7958364, -0.19971299, -5.2211447)
+
+[node name="Terrain" parent="." instance=ExtResource("9_yecn6")]
