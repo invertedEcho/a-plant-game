@@ -1,6 +1,7 @@
-using agame.scripts.Player;
 using Godot;
 using Godot.Collections;
+
+namespace agame;
 
 public partial class UiManager : Control {
     public static UiManager Instance;
@@ -23,7 +24,7 @@ public partial class UiManager : Control {
         Instance = this;
         CurrentObjectiveLabel.Text = GameManager.GetCurrentObjectiveDescription(GameManager.Instance.CurrentObjective);
 
-        for (int i = 0; i < Player.InventorySize; i++) {
+        for (int i = 0; i < Player.Player.InventorySize; i++) {
             InventorySlotTextures.Add(GetNode<TextureRect>($"/root/World/UiRoot/HotbarInventory/InventorySlot{i + 1}"));
         }
     }

@@ -1,8 +1,10 @@
 using Godot;
 using Godot.Collections;
-using static GameItem;
+using agame.Items;
+using static agame.World.GrowPlot;
+using static agame.Items.BuildItem;
 
-namespace agame.scripts.Player;
+namespace agame.Player;
 
 public partial class Player : CharacterBody3D {
     private PlayerCamera _playerCamera;
@@ -11,7 +13,7 @@ public partial class Player : CharacterBody3D {
 
     public static Player Instance;
 
-    public int CoinCount { get; set; } = 0;
+    public float CoinCount { get; private set; } = 0f;
 
 
     public const int InventorySize = 8;
@@ -70,7 +72,8 @@ public partial class Player : CharacterBody3D {
         }
     }
 
-    public void AddCoin(int toAdd) {
+    /// To substract coins, use a negative number
+    public void UpdateCoin(float toAdd) {
         CoinCount += toAdd;
         UiManager.Instance.CoinsLabel.Text = CoinCount.ToString();
     }
@@ -122,18 +125,36 @@ public partial class Player : CharacterBody3D {
     }
 
     /// Returns the game item and index for the given GameItemType
-    public (GameItem, int)? GetInventoryItemByType(GameItemType gameItemType) {
-        for (int i = 0; i < InventorySize; i++) {
-            GameItem currentItem = _inventory[i];
-            if (currentItem.gameItemType == gameItemType) {
-                switch (gameItemType) {
-                    case GameItemType.Plant: {
-                            break;
-                        }
-                }
-                return (currentItem, i);
+    public (PlantItem, int)? GetPlantItemByType(PlantType plantType) {
+        for (int index = 0; index < InventorySize; index++) {
+            GameItem currentItem = _inventory[index];
+            if (currentItem is PlantItem plantItem && plantItem.Type == plantType) {
+                return (plantItem, index);
             }
         }
         return null;
+    }
+
+    public int GetPlayerOwnCountForPlantItemByType(PlantType plantType) {
+        int count = 0;
+        for (int index = 0; index < InventorySize; index++) {
+            GameItem currentItem = _inventory[index];
+            if (currentItem is PlantItem plantItem && plantItem.Type == plantType) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    public int GetPlayerOwnCountnForBuildItemByType(BuildItemType buildItemType) {
+        int count = 0;
+        for (int index = 0; index < InventorySize; index++) {
+            GameItem currentItem = _inventory[index];
+            if (currentItem is BuildItem buildItem && buildItem.Type == buildItemType) {
+                count++;
+            }
+        }
+        return count;
+
     }
 }

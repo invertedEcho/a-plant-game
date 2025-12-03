@@ -1,7 +1,7 @@
 [gd_scene load_steps=23 format=3 uid="uid://c23501e3bb6dg"]
 
 [ext_resource type="PackedScene" uid="uid://riitnirwoj1e" path="res://assets/models/market_shop.glb" id="1_mpsqr"]
-[ext_resource type="Script" uid="uid://cpk3qgfiedqsh" path="res://scripts/World/Shop.cs" id="2_suuck"]
+[ext_resource type="Script" uid="uid://cpk3qgfiedqsh" path="res://src/world/Shop.cs" id="2_suuck"]
 [ext_resource type="PackedScene" uid="uid://ck1l4ax35ntfk" path="res://assets/models/characters/character-c.glb" id="3_s3tas"]
 
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_xm2yw"]
@@ -61,10 +61,15 @@ data = PackedVector3Array(0.1563, 0.0469, 0.0938, 0.1563, 0.0469, -0.0938, 0.156
 [sub_resource type="BoxShape3D" id="BoxShape3D_xm2yw"]
 size = Vector3(1.5, 1, 1.5)
 
-[node name="Shop" node_paths=PackedStringArray("area3D") instance=ExtResource("1_mpsqr")]
+[node name="Shop" node_paths=PackedStringArray("_area3D", "_shopMenuList", "_descriptionLabel", "_playerOwningCountLabel", "_buyButton", "_sellButton") instance=ExtResource("1_mpsqr")]
 transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0)
 script = ExtResource("2_suuck")
-area3D = NodePath("Area3D")
+_area3D = NodePath("Area3D")
+_shopMenuList = NodePath("ShopMenu/VBoxContainer/HBoxContainer2/ItemList")
+_descriptionLabel = NodePath("ShopMenu/VBoxContainer/HBoxContainer2/VBoxContainer/DescriptionText")
+_playerOwningCountLabel = NodePath("ShopMenu/VBoxContainer/HBoxContainer2/VBoxContainer/PlayerOwningCount")
+_buyButton = NodePath("ShopMenu/VBoxContainer/HBoxContainer2/VBoxContainer/HBoxContainer/BuyButton")
+_sellButton = NodePath("ShopMenu/VBoxContainer/HBoxContainer2/VBoxContainer/HBoxContainer/SellButton")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="Sketchfab_model/root/GLTF_SceneRootNode/_18/cube_0/Object_5" index="0"]
 
@@ -166,9 +171,71 @@ transform = Transform3D(0.99999994, 1.6653345e-15, 7.1054274e-15, 3.330669e-15, 
 shape = SubResource("ConcavePolygonShape3D_0ohhw")
 
 [node name="NPCCharacterModel" parent="." index="1" instance=ExtResource("3_s3tas")]
-transform = Transform3D(-0.0017697429, 0, -0.19999216, 0, 0.2, 0, 0.19999216, 0, -0.0017697429, 0.42291355, 0.062206507, -0.08826404)
+transform = Transform3D(-0.0017697429, 0, -0.19999216, 0, 0.2, 0, 0.19999216, 0, -0.0017697429, 0.423, 0, -0.088)
 
-[node name="Area3D" type="Area3D" parent="." index="2"]
+[node name="ShopMenu" type="Control" parent="." index="2"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ColorRect" type="ColorRect" parent="ShopMenu" index="0"]
+custom_minimum_size = Vector2(100.435, 100)
+layout_mode = 0
+offset_left = -1.0
+offset_right = 1187.0
+offset_bottom = 703.0
+color = Color(0.42754734, 0.22835281, 0.12383319, 0.7490196)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ShopMenu" index="1"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="ShopMenu/VBoxContainer" index="0"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ItemList" type="ItemList" parent="ShopMenu/VBoxContainer/HBoxContainer2" index="0"]
+layout_mode = 2
+size_flags_horizontal = 3
+fixed_icon_size = Vector2i(64, 64)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ShopMenu/VBoxContainer/HBoxContainer2" index="1"]
+layout_mode = 2
+
+[node name="DescriptionText" type="Label" parent="ShopMenu/VBoxContainer/HBoxContainer2/VBoxContainer" index="0"]
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+size_flags_vertical = 3
+text = "Description of currently selected item"
+autowrap_mode = 3
+
+[node name="PlayerOwningCount" type="Label" parent="ShopMenu/VBoxContainer/HBoxContainer2/VBoxContainer" index="1"]
+layout_mode = 2
+text = "You have: 0"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ShopMenu/VBoxContainer/HBoxContainer2/VBoxContainer" index="2"]
+layout_mode = 2
+
+[node name="SellButton" type="Button" parent="ShopMenu/VBoxContainer/HBoxContainer2/VBoxContainer/HBoxContainer" index="0"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Sell"
+
+[node name="BuyButton" type="Button" parent="ShopMenu/VBoxContainer/HBoxContainer2/VBoxContainer/HBoxContainer" index="1"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Buy"
+
+[node name="Area3D" type="Area3D" parent="." index="3"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4528618, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" index="0"]

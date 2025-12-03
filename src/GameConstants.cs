@@ -1,5 +1,4 @@
-public static class GameConstants
-{
+public static class GameConstants {
     public const int CactusSellPrize = 15;
     public const int CactusBuyPrize = 20;
 

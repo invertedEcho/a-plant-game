@@ -1,6 +1,6 @@
 [gd_scene load_steps=11 format=3 uid="uid://dgs4yhglem7hx"]
 
-[ext_resource type="Script" uid="uid://2ipbk8kkk24f" path="res://scripts/World/GrowPlot.cs" id="1_g4lef"]
+[ext_resource type="Script" uid="uid://2ipbk8kkk24f" path="res://src/world/GrowPlot.cs" id="1_g4lef"]
 [ext_resource type="PackedScene" uid="uid://cck4f7qhc5hs3" path="res://assets/models/nature/WoodLog_Moss.glb" id="2_klu2l"]
 [ext_resource type="Texture2D" uid="uid://cklxdipln0y1c" path="res://assets/textures/textures_2/Dirt/Dirt_02/Dirt_02_basecolor.png" id="3_00ysm"]
 [ext_resource type="Texture2D" uid="uid://bagirxhcv6fgs" path="res://assets/textures/textures_2/Dirt/Dirt_02/Dirt_02_ambientocclusion.png" id="4_ega34"]
@@ -26,9 +26,9 @@ heightmap_enabled = true
 heightmap_texture = ExtResource("5_xcqvh")
 uv1_scale = Vector3(5, 5, 5)
 
-[node name="GrowPlot" type="Node3D" node_paths=PackedStringArray("groundMesh", "area3D")]
+[node name="GrowPlot" type="Node3D" node_paths=PackedStringArray("_dirtPatchMesh", "area3D")]
 script = ExtResource("1_g4lef")
-groundMesh = NodePath("Ground")
+_dirtPatchMesh = NodePath("Ground")
 area3D = NodePath("Area3D")
 
 [node name="WoodLog_Moss5" parent="." instance=ExtResource("2_klu2l")]

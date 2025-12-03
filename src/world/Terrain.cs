@@ -1,6 +1,8 @@
 using System;
 using Godot;
 
+namespace agame.World;
+
 public partial class Terrain : Node3D {
     [Export]
     MeshInstance3D terrainMesh;
@@ -24,7 +26,7 @@ public partial class Terrain : Node3D {
         treeMeshes.Multimesh.InstanceCount = instanceCount;
         treeMeshes.Multimesh.Mesh = GD.Load<Mesh>("res://assets/models/nature/pine_tree_mesh.tres");
 
-        Random randomInstance = new Random();
+        Random randomInstance = new();
 
         Aabb boundingBox = terrainMesh.GetAabb();
 
@@ -33,10 +35,10 @@ public partial class Terrain : Node3D {
         float boundingBoxSizeZ = boundingBox.Size.Z - 30f;
 
         float globalMinX = -(boundingBoxSizeX / 2f);
-        float globalMaxX = (boundingBoxSizeX / 2f);
+        float globalMaxX = boundingBoxSizeX / 2f;
 
         float globalMinZ = -(boundingBoxSizeZ / 2f);
-        float globalMaxZ = (boundingBoxSizeZ / 2f);
+        float globalMaxZ = boundingBoxSizeZ / 2f;
 
         float lowerMinX = globalMinX - HalfOfOffset;
         float upperMinX = globalMinX + HalfOfOffset;
@@ -58,7 +60,7 @@ public partial class Terrain : Node3D {
             float randomX = MathUtils.GetRandomFloatRange(randomInstance, globalMinX, globalMaxX);
             float randomZ = MathUtils.GetRandomFloatRange(randomInstance, lowerMinZ, upperMinZ);
 
-            Vector3 randomEdgePoint = new Vector3((float)randomX, 5f, (float)randomZ);
+            Vector3 randomEdgePoint = new((float)randomX, 5f, (float)randomZ);
             Vector3? snappedEdgePoint = SnapToTerrain(randomEdgePoint);
             if (snappedEdgePoint is Vector3 edgePoint) {
                 Transform3D transform = Transform3D.Identity;
@@ -74,7 +76,7 @@ public partial class Terrain : Node3D {
             float randomX = MathUtils.GetRandomFloatRange(randomInstance, globalMinX, globalMaxX);
             double randomZ = MathUtils.GetRandomFloatRange(randomInstance, lowerMaxZ, upperMaxZ);
 
-            Vector3 randomEdgePoint = new Vector3((float)randomX, 5f, (float)randomZ);
+            Vector3 randomEdgePoint = new((float)randomX, 5f, (float)randomZ);
             Vector3? snappedEdgePoint = SnapToTerrain(randomEdgePoint);
             if (snappedEdgePoint is Vector3 edgePoint) {
                 Transform3D transform = Transform3D.Identity;
@@ -88,7 +90,7 @@ public partial class Terrain : Node3D {
             float randomX = MathUtils.GetRandomFloatRange(randomInstance, lowerMinX, upperMinX);
             double randomZ = MathUtils.GetRandomFloatRange(randomInstance, globalMinZ, globalMaxZ);
 
-            Vector3 randomEdgePoint = new Vector3((float)randomX, 5f, (float)randomZ);
+            Vector3 randomEdgePoint = new((float)randomX, 5f, (float)randomZ);
             Vector3? snappedEdgePoint = SnapToTerrain(randomEdgePoint);
             if (snappedEdgePoint is Vector3 edgePoint) {
                 Transform3D transform = Transform3D.Identity;
@@ -102,7 +104,7 @@ public partial class Terrain : Node3D {
             float randomX = MathUtils.GetRandomFloatRange(randomInstance, lowerMaxX, upperMaxX);
             double randomZ = MathUtils.GetRandomFloatRange(randomInstance, globalMinZ, globalMaxZ);
 
-            Vector3 randomEdgePoint = new Vector3((float)randomX, 5f, (float)randomZ);
+            Vector3 randomEdgePoint = new((float)randomX, 5f, (float)randomZ);
             Vector3? snappedEdgePoint = SnapToTerrain(randomEdgePoint);
             if (snappedEdgePoint is Vector3 edgePoint) {
                 Transform3D transform = Transform3D.Identity;
@@ -115,7 +117,6 @@ public partial class Terrain : Node3D {
         for (int i = 0; i < instanceCount; i++) {
             float randomScaleValue = MathUtils.GetRandomFloatRange(randomInstance, MinScaleValue, MaxScalueValue);
             float randomRotationValue = MathUtils.GetRandomFloatRange(randomInstance, MinRotationValue, MaxRotationValue);
-            GD.Print($"randomScaleValue: {randomScaleValue}");
 
             Transform3D existingTransform = treeMeshes.Multimesh.GetInstanceTransform(i);
 
@@ -133,15 +134,14 @@ public partial class Terrain : Node3D {
         Vector3 start = position + Vector3.Up * 200.0f;
         Vector3 end = position + Vector3.Down * 200.0f;
 
-        PhysicsRayQueryParameters3D queryParameters = new PhysicsRayQueryParameters3D();
-        queryParameters.From = start;
-        queryParameters.To = end;
+        PhysicsRayQueryParameters3D queryParameters = new() {
+            From = start,
+            To = end
+        };
 
         var rayCastResult = space.IntersectRay(queryParameters);
 
-        Variant position2;
-        if (rayCastResult.TryGetValue("position", out position2)) {
-            GD.Print($"found top of position: {position2}");
+        if (rayCastResult.TryGetValue("position", out Variant position2)) {
             return (Vector3)position2;
         }
         return null;
