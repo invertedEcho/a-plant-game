@@ -10,9 +10,8 @@ public partial class Shop : Node3D {
     [Export]
     private Area3D _area3D;
 
-    private Player.Player _player;
-
     private Control _shopMenu;
+
     [Export]
     private ItemList _shopMenuList;
     [Export]
@@ -24,6 +23,8 @@ public partial class Shop : Node3D {
     [Export]
     private Button _sellButton;
 
+    private CanvasLayer _rootCanvasLayer;
+
     // we shouldnt have to save this again, we already have _shopMenuList, find out if we can save our ownn data in a `ItemList`
     private Array<GameItem> _shopItems = [];
 
@@ -31,11 +32,11 @@ public partial class Shop : Node3D {
     private GameItem? _selectedGameItem;
 
     public override void _Ready() {
-        // hmm i dont know how i feel about this, maybe better way to access player inventory?
-        _player = GetNode<Player.Player>("/root/World/Player");
         _area3D = GetNode<Area3D>("Area3D");
         _shopMenu = GetNode<Control>("ShopMenu");
         _shopMenu.Visible = false;
+
+        _rootCanvasLayer = GetNode<CanvasLayer>("/root/World/CanvasLayer");
 
         _area3D.BodyEntered += OnBodyEntered;
         _area3D.BodyExited += OnBodyExit;
@@ -71,7 +72,7 @@ public partial class Shop : Node3D {
 
         _sellButton.Disabled = count == 0;
 
-        bool playerHasEnoughCoinsToBuy = Player.Player.Instance.CoinCount < _selectedGameItem.BuyPrice;
+        bool playerHasEnoughCoinsToBuy = Player.Player.Instance.CoinCount >= _selectedGameItem.BuyPrice;
         _buyButton.Disabled = !playerHasEnoughCoinsToBuy;
     }
 
@@ -140,6 +141,7 @@ public partial class Shop : Node3D {
 
         // or we disallow movement when shop menu is open
         _shopMenu.Visible = false;
+        _rootCanvasLayer.Visible = true;
     }
 
     private void HandleInteractionWithShop() {
@@ -153,10 +155,12 @@ public partial class Shop : Node3D {
             Input.MouseMode = Input.MouseModeEnum.Visible;
             UpdateUserOwnLabelOfSelectedItem();
             UpdateBuyAndSellButtonStates();
+            _rootCanvasLayer.Visible = false;
         }
         else if (Input.IsActionJustPressed("escape")) {
             _shopMenu.Visible = false;
             Input.MouseMode = Input.MouseModeEnum.Captured;
+            _rootCanvasLayer.Visible = true;
         }
     }
 

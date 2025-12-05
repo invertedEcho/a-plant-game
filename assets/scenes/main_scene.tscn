@@ -53,71 +53,74 @@ skeleton = NodePath("")
 [node name="SunLight" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.21694095, -0.92885137, -0.30028638, 0.12379606, -0.27895105, 0.9522925, -0.9683032, -0.24376553, 0.054472238, 0, 21.900164, 0)
 
-[node name="UiRoot" type="Control" parent="." node_paths=PackedStringArray("CurrentObjectiveLabel", "InteractLabel", "CoinsLabel")]
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="UiRoot" type="Control" parent="CanvasLayer" node_paths=PackedStringArray("CurrentObjectiveLabel", "InteractLabel", "CoinsLabel")]
 layout_mode = 3
-anchors_preset = 0
-offset_top = -3.0
-offset_right = 40.0
-offset_bottom = 37.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("6_vo808")
 CurrentObjectiveLabel = NodePath("MarginContainer/VBoxContainer/CurrentObjectiveLabel")
 InteractLabel = NodePath("InteractLabel")
 CoinsLabel = NodePath("MarginContainer/VBoxContainer/HBoxContainer/CoinsLabel")
 
-[node name="MarginContainer" type="MarginContainer" parent="UiRoot"]
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/UiRoot"]
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="UiRoot/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/UiRoot/MarginContainer"]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="UiRoot/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/UiRoot/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="TextureRect" type="TextureRect" parent="UiRoot/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/UiRoot/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 texture = ExtResource("7_4v045")
 stretch_mode = 3
 
-[node name="CoinsLabel" type="Label" parent="UiRoot/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="CoinsLabel" type="Label" parent="CanvasLayer/UiRoot/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 text = "0"
 
-[node name="CurrentObjectiveLabel" type="Label" parent="UiRoot/MarginContainer/VBoxContainer"]
+[node name="CurrentObjectiveLabel" type="Label" parent="CanvasLayer/UiRoot/MarginContainer/VBoxContainer"]
 layout_mode = 2
 text = "Current Objective: "
 
-[node name="InteractLabel" type="Label" parent="UiRoot"]
-layout_mode = 0
-offset_left = 516.0
-offset_top = 542.0
-offset_right = 666.0
-offset_bottom = 565.0
-
-[node name="HotbarInventory" type="TextureRect" parent="UiRoot"]
-layout_mode = 0
-offset_left = 377.0
-offset_top = 582.0
-offset_right = 710.0
-offset_bottom = 622.0
+[node name="HotbarInventory" type="TextureRect" parent="CanvasLayer/UiRoot"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -166.5
+offset_top = -40.0
+offset_right = 166.5
+offset_bottom = -25.0
+grow_horizontal = 2
+grow_vertical = 0
 texture = ExtResource("14_wtluq")
 
-[node name="InventorySlot1" type="TextureRect" parent="UiRoot/HotbarInventory"]
+[node name="InventorySlot1" type="TextureRect" parent="CanvasLayer/UiRoot/HotbarInventory"]
 layout_mode = 0
 offset_left = 1.0
 offset_right = 41.0
 offset_bottom = 40.0
 expand_mode = 1
 
-[node name="InventorySlot2" type="TextureRect" parent="UiRoot/HotbarInventory"]
+[node name="InventorySlot2" type="TextureRect" parent="CanvasLayer/UiRoot/HotbarInventory"]
 layout_mode = 0
 offset_left = 42.0
 offset_right = 82.0
 offset_bottom = 40.0
 expand_mode = 1
 
-[node name="InventorySlot3" type="TextureRect" parent="UiRoot/HotbarInventory"]
+[node name="InventorySlot3" type="TextureRect" parent="CanvasLayer/UiRoot/HotbarInventory"]
 layout_mode = 0
 offset_left = 83.0
 offset_top = 1.0
@@ -125,40 +128,54 @@ offset_right = 123.0
 offset_bottom = 41.0
 expand_mode = 1
 
-[node name="InventorySlot4" type="TextureRect" parent="UiRoot/HotbarInventory"]
+[node name="InventorySlot4" type="TextureRect" parent="CanvasLayer/UiRoot/HotbarInventory"]
 layout_mode = 0
 offset_left = 125.0
 offset_right = 165.0
 offset_bottom = 40.0
 expand_mode = 1
 
-[node name="InventorySlot5" type="TextureRect" parent="UiRoot/HotbarInventory"]
+[node name="InventorySlot5" type="TextureRect" parent="CanvasLayer/UiRoot/HotbarInventory"]
 layout_mode = 0
 offset_left = 167.0
 offset_right = 207.0
 offset_bottom = 40.0
 expand_mode = 1
 
-[node name="InventorySlot6" type="TextureRect" parent="UiRoot/HotbarInventory"]
+[node name="InventorySlot6" type="TextureRect" parent="CanvasLayer/UiRoot/HotbarInventory"]
 layout_mode = 0
 offset_left = 207.0
 offset_right = 247.0
 offset_bottom = 40.0
 expand_mode = 1
 
-[node name="InventorySlot7" type="TextureRect" parent="UiRoot/HotbarInventory"]
+[node name="InventorySlot7" type="TextureRect" parent="CanvasLayer/UiRoot/HotbarInventory"]
 layout_mode = 0
 offset_left = 249.0
 offset_right = 289.0
 offset_bottom = 40.0
 expand_mode = 1
 
-[node name="InventorySlot8" type="TextureRect" parent="UiRoot/HotbarInventory"]
+[node name="InventorySlot8" type="TextureRect" parent="CanvasLayer/UiRoot/HotbarInventory"]
 layout_mode = 0
 offset_left = 291.0
 offset_right = 331.0
 offset_bottom = 40.0
 expand_mode = 1
+
+[node name="InteractLabel" type="Label" parent="CanvasLayer/UiRoot"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -0.5
+offset_top = -23.0
+offset_right = 0.5
+offset_bottom = -80.0
+grow_horizontal = 2
+grow_vertical = 0
 
 [node name="Shop" parent="." instance=ExtResource("8_0ft0v")]
 transform = Transform3D(3.491015, 0, 3.5794997, 0, 5.0000005, 0, -3.5794997, 0, 3.491015, 6.6425257, 0.03980112, -17.628967)

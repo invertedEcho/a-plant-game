@@ -25,7 +25,7 @@ public partial class UiManager : Control {
         CurrentObjectiveLabel.Text = GameManager.GetCurrentObjectiveDescription(GameManager.Instance.CurrentObjective);
 
         for (int i = 0; i < Player.Player.InventorySize; i++) {
-            InventorySlotTextures.Add(GetNode<TextureRect>($"/root/World/UiRoot/HotbarInventory/InventorySlot{i + 1}"));
+            InventorySlotTextures.Add(GetNode<TextureRect>($"/root/World/CanvasLayer/UiRoot/HotbarInventory/InventorySlot{i + 1}"));
         }
     }
 }
