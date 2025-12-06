@@ -26,5 +26,6 @@ public partial class World : Node3D {
         var node = scene.Instantiate<Node3D>();
         node.Position = buildPosition;
         AddChild(node);
+        GD.Print($"added grow plot at {buildPosition}");
     }
 }

@@ -12,8 +12,7 @@ public partial class PlayerInventory : Node {
 
     private Player _player;
 
-    public int CurrentHotbarSlotSelected = 0;
-
+    public int CurrentHotbarIndex = 0;
 
     public override void _Ready() {
         _player = GetParent<Player>();
@@ -22,8 +21,7 @@ public partial class PlayerInventory : Node {
 
     private void CreateInitialHotbarItems() {
         for (int i = 0; i < HotbarSize; i++) {
-            GD.Print("adding default item to hotbar");
-            Hotbar.Add(GrowPlot);
+            Hotbar.Add(new GameItem { IsPlaceHolder = true });
         }
     }
 
@@ -37,9 +35,9 @@ public partial class PlayerInventory : Node {
     /// True if the item is placed successfully; otherwise false.
     /// </returns>
     public bool TryPlaceItemInHotbar(GameItem itemToAdd) {
-        if (Hotbar[CurrentHotbarSlotSelected].IsPlaceHolder) {
-            Hotbar[CurrentHotbarSlotSelected] = itemToAdd;
-            UiManager.Instance.UpdateItemPreviewSlotTexture(CurrentHotbarSlotSelected, itemToAdd.PathToTexture);
+        if (Hotbar[CurrentHotbarIndex].IsPlaceHolder) {
+            Hotbar[CurrentHotbarIndex] = itemToAdd;
+            UiManager.Instance.UpdateItemPreviewSlotTexture(CurrentHotbarIndex, itemToAdd.PathToTexture);
             return true;
         }
         for (int index = 0; index < Hotbar.Count; index++) {

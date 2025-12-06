@@ -44,7 +44,7 @@ public partial class GrowPlot : Node3D {
     }
 
     private void OnBodyEntered(Node3D body) {
-        if (!body.IsInGroup("player") || Player.Player.Instance.InBuildMode) return;
+        if (!body.IsInGroup("player") || Player.Player.Instance.PlayerBuildMode.GetIsInBuildMode()) return;
         GD.Print("player has entered dirtpatch range!");
         playerInRange = true;
         UiManager.Instance.InteractLabel.Visible = true;
@@ -53,7 +53,7 @@ public partial class GrowPlot : Node3D {
     }
 
     private void OnBodyExit(Node3D body) {
-        if (!body.IsInGroup("player") || Player.Player.Instance.InBuildMode) return;
+        if (!body.IsInGroup("player") || Player.Player.Instance.PlayerBuildMode.GetIsInBuildMode()) return;
         GD.Print("player has exited dirtpatch range!");
         playerInRange = false;
         UiManager.Instance.InteractLabel.Visible = false;

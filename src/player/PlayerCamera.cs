@@ -1,4 +1,3 @@
-using agame.utils;
 using Godot;
 
 namespace agame.Player;
@@ -7,10 +6,6 @@ public partial class PlayerCamera : Camera3D {
     private float pitch = 0f;
     private const float Sens = 0.002f;
     public bool freeCamEnabled = false;
-
-    private Node3D buildPreview = null;
-    private const float MinBuildPreviewDistance = -4f;
-    private const float MaxBuildPreviewDistance = -6f;
 
     public override void _Ready() {
         Input.MouseMode = Input.MouseModeEnum.Captured;
@@ -27,27 +22,11 @@ public partial class PlayerCamera : Camera3D {
 
             Rotation = new Vector3(pitch, Rotation.Y, 0);
         }
-        if (Input.IsActionPressed("scroll_down") && buildPreview is not null) {
-            var newPosition = buildPreview.Position;
-            newPosition.Z += 0.1f;
-            GD.Print($"new desired z position: {newPosition.Z}");
-            newPosition.Z = Mathf.Clamp(newPosition.Z, MaxBuildPreviewDistance, MinBuildPreviewDistance);
-            buildPreview.Position = newPosition;
-        }
-
-        if (Input.IsActionPressed("scroll_up") && buildPreview is not null) {
-            var newPosition = buildPreview.Position;
-            newPosition.Z -= 0.1f;
-            GD.Print($"new desired z position: {newPosition.Z}");
-            newPosition.Z = Mathf.Clamp(newPosition.Z, MaxBuildPreviewDistance, MinBuildPreviewDistance);
-            buildPreview.Position = newPosition;
-        }
     }
 
     public override void _Process(double delta) {
         ToggleFreeCam();
         HandleFreeCamMovement();
-        UpdateBuildPreviewPosition();
     }
 
     private void HandleFreeCamMovement() {
@@ -89,41 +68,6 @@ public partial class PlayerCamera : Camera3D {
             if (!freeCamEnabled) {
                 Transform = Transform3D.Identity;
             }
-        }
-    }
-
-    // also despawns and spawn again <- mostly for debug purposes right now
-    public void SpawnBuildPreview(string pathToScene) {
-        if (buildPreview is not null) {
-            GD.PrintErr("despawning build preview");
-            buildPreview.Free();
-            buildPreview = null;
-        }
-        GD.Print("spawning build preview");
-        var scene = GD.Load<PackedScene>(pathToScene);
-        buildPreview = scene.Instantiate<Node3D>();
-
-        Vector3 buildPreviewPosition = new(0f, -1.5f, -3f);
-        buildPreview.Position = buildPreviewPosition;
-
-        AddChild(buildPreview);
-    }
-
-    private void UpdateBuildPreviewPosition() {
-        var space = GetWorld3D().DirectSpaceState;
-        if (buildPreview is null) {
-            return;
-        }
-        Vector3 existingRotation = buildPreview.Rotation;
-        existingRotation.X = -Rotation.X;
-        buildPreview.Rotation = existingRotation;
-
-        Vector3? snappedToGround = Utils.SnapToGround(buildPreview.GlobalPosition, space, [Player.Instance.GetRid()]);
-        if (snappedToGround is Vector3 newPosition) {
-            buildPreview.GlobalPosition = newPosition;
-        }
-        else {
-            GD.PrintErr("couldnt find valid ground to snap build preview to");
         }
     }
 }

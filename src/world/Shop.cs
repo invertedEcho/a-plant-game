@@ -117,7 +117,7 @@ public partial class Shop : Node3D {
     }
 
     private void OnBodyEntered(Node3D body) {
-        if (!body.IsInGroup("player") || Player.Player.Instance.InBuildMode) return;
+        if (!body.IsInGroup("player") || Player.Player.Instance.PlayerBuildMode.GetIsInBuildMode()) return;
 
         GD.Print("player has entered shop range!");
         if (GameManager.Instance.CurrentObjective == GameManager.GameObjective.GrowFirstPlant) {
@@ -130,7 +130,7 @@ public partial class Shop : Node3D {
     }
 
     public void OnBodyExit(Node3D body) {
-        if (!body.IsInGroup("player") || Player.Player.Instance.InBuildMode) return;
+        if (!body.IsInGroup("player") || Player.Player.Instance.PlayerBuildMode.GetIsInBuildMode()) return;
 
         _playerInRange = false;
         UiManager.Instance.InteractLabel.Visible = false;
@@ -141,7 +141,7 @@ public partial class Shop : Node3D {
     }
 
     private void HandleInteractionWithShop() {
-        if (!_playerInRange || Player.Player.Instance.InBuildMode) {
+        if (!_playerInRange || Player.Player.Instance.PlayerBuildMode.GetIsInBuildMode()) {
             return;
         }
 

@@ -1,13 +1,15 @@
 using Godot;
 using agame.Items;
 using static agame.Items.BuildItem;
+using agame.player;
 
 namespace agame.Player;
 
 public partial class Player : CharacterBody3D {
+    public static Player Instance { get; private set; }
 
     // --- Player camera ---
-    private PlayerCamera _playerCamera;
+    public PlayerCamera PlayerCamera;
     private float _cameraJiggleAmmount = 0.3f;
     private Vector3 _cameraInitalPos;
     private Vector3 _cameraTargetPos;
@@ -21,21 +23,27 @@ public partial class Player : CharacterBody3D {
     // --- Movement related ---
     private PlayerMovement _playerMovement;
 
+    // --- Inventory related ---
     public PlayerInventory Inventory;
-    public bool InBuildMode = false;
-
-    public static Player Instance { get; private set; }
-
     public float CoinCount { get; private set; } = 0f;
+
+    // --- BuildMode related ---
+    public PlayerBuildMode PlayerBuildMode;
 
     public override void _Ready() {
         Instance = this;
+
         _playerMovement = new PlayerMovement();
+
         Inventory = new PlayerInventory();
         AddChild(Inventory);
-        _playerCamera = (PlayerCamera)GetNode("PlayerCamera");
-        _cameraTargetPos = _playerCamera.Position;
-        _cameraInitalPos = _playerCamera.Position;
+
+        PlayerCamera = (PlayerCamera)GetNode("PlayerCamera");
+        _cameraTargetPos = PlayerCamera.Position;
+        _cameraInitalPos = PlayerCamera.Position;
+
+        PlayerBuildMode = new PlayerBuildMode();
+        AddChild(PlayerBuildMode);
     }
 
     public override void _PhysicsProcess(double delta) {
@@ -54,7 +62,6 @@ public partial class Player : CharacterBody3D {
     }
 
     public override void _Process(double delta) {
-        HandleBuildPreviewSpawnInput();
         if (Input.IsActionJustPressed("hotbar_1")) {
             UpdateCurrentHotbarSlotSelected(0);
         }
@@ -81,15 +88,15 @@ public partial class Player : CharacterBody3D {
         }
 
         // --- Read input from player ---
-        _playerMovement.HandleInput(_playerCamera.Basis);
+        _playerMovement.HandleInput(PlayerCamera.Basis);
 
         // --- Camera control ---
-        _playerCamera.Position = _playerCamera.Position.Lerp(_cameraTargetPos, (float)delta * 10f);
+        PlayerCamera.Position = PlayerCamera.Position.Lerp(_cameraTargetPos, (float)delta * 10f);
 
         // --- Grapple gun ---
-        if (!InBuildMode) {
+        if (!PlayerBuildMode.GetIsInBuildMode()) {
             if (Input.IsActionJustPressed("mouse_click_left")) {
-                _grappleHit = GetCamRaycast(_playerCamera, 3000.0f);
+                _grappleHit = GetCamRaycast(PlayerCamera, 3000.0f);
                 if (_grappleHit != null) {
                     PackedScene ropeScene = GD.Load<PackedScene>("res://assets/scenes/rope.tscn");
                     _rope = ropeScene.Instantiate<Rope>();
@@ -103,25 +110,25 @@ public partial class Player : CharacterBody3D {
             }
 
             if (_grappleHit.HasValue) {
-                _rope.startPoint = _playerCamera.GlobalPosition - new Vector3(0f, 0.3f, 0f);
+                _rope.startPoint = PlayerCamera.GlobalPosition - new Vector3(0f, 0.3f, 0f);
                 _rope.endPoint = _grappleHit.Value;
 
-                Vector3 toGrapple = _grappleHit.Value - _playerCamera.GlobalPosition;
+                Vector3 toGrapple = _grappleHit.Value - PlayerCamera.GlobalPosition;
                 toGrapple = toGrapple.Normalized();
-                _playerMovement.finalVelocity += toGrapple * (float)delta * _grappleStren * _playerCamera.Position.DistanceTo(_grappleHit.Value) / 10.0f;
+                _playerMovement.finalVelocity += toGrapple * (float)delta * _grappleStren * PlayerCamera.Position.DistanceTo(_grappleHit.Value) / 10.0f;
             }
         }
     }
 
     private void UpdateCurrentHotbarSlotSelected(int newHotbarSlotSelected) {
-        Inventory.CurrentHotbarSlotSelected = newHotbarSlotSelected;
+        Inventory.CurrentHotbarIndex = newHotbarSlotSelected;
         UiManager.Instance.UpdateSelectedHotbarSlot(newHotbarSlotSelected);
         UpdateInteractLabel();
     }
 
     private void UpdateInteractLabel() {
-        if (InBuildMode) return;
-        bool currentHotbarItemIsGrowPlot = Inventory.Hotbar[Inventory.CurrentHotbarSlotSelected] is BuildItem buildItem && buildItem.Type == BuildItemType.GrowPlot;
+        if (PlayerBuildMode.GetIsInBuildMode()) return;
+        bool currentHotbarItemIsGrowPlot = Inventory.Hotbar[Inventory.CurrentHotbarIndex] is BuildItem buildItem && buildItem.Type == BuildItemType.GrowPlot;
         if (currentHotbarItemIsGrowPlot) {
             UiManager.Instance.InteractLabel.Visible = true;
             UiManager.Instance.InteractLabel.Text = "Press (E) to enter Build Mode";
@@ -178,25 +185,12 @@ public partial class Player : CharacterBody3D {
         return null;
     }
 
-    private void HandleBuildPreviewSpawnInput() {
-        if (Input.IsActionJustPressed("build_mode") && !InBuildMode) {
-            var pathToPreviewScene = GetPathToPreviewScene();
-            if (pathToPreviewScene is not null) {
-                _playerCamera.SpawnBuildPreview(pathToPreviewScene);
-                InBuildMode = true;
-                UiManager.Instance.InteractLabel.Text = "Pres (F) to build here";
-            }
-        }
-    }
-
 #nullable enable
-    private string? GetPathToPreviewScene() {
-        bool currentHotbarItemIsGrowPlot = Inventory.Hotbar[Inventory.CurrentHotbarSlotSelected] is BuildItem buildItem && buildItem.Type == BuildItemType.GrowPlot;
+    public string? GetPathToPreviewScene() {
+        bool currentHotbarItemIsGrowPlot = Inventory.Hotbar[Inventory.CurrentHotbarIndex] is BuildItem buildItem && buildItem.Type == BuildItemType.GrowPlot;
         if (currentHotbarItemIsGrowPlot) {
             return "res://assets/scenes/grow_plot_blueprint.tscn";
         }
         return null;
     }
-
-    // if valid positon, set interact label to press fo to build thing here
 }
