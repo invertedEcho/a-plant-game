@@ -1,4 +1,5 @@
 using System;
+using agame.utils;
 using Godot;
 
 namespace agame.World;
@@ -60,11 +61,14 @@ public partial class Terrain : Node3D {
         // 1. X: between global
         //    Z: 0, but has to be like - 5 and + 5 to have slight derivation
         for (int i = 0; i < instanceCount / 4; i++) {
-            float randomX = MathUtils.GetRandomFloatRange(randomInstance, globalMinX, globalMaxX);
-            float randomZ = MathUtils.GetRandomFloatRange(randomInstance, lowerMinZ, upperMinZ);
+            float randomX = Utils.GetRandomFloatRange(randomInstance, globalMinX, globalMaxX);
+            float randomZ = Utils.GetRandomFloatRange(randomInstance, lowerMinZ, upperMinZ);
 
             Vector3 randomEdgePoint = new((float)randomX, 5f, (float)randomZ);
-            Vector3? snappedEdgePoint = SnapToGround(randomEdgePoint);
+
+            var space = GetWorld3D().DirectSpaceState;
+            Vector3? snappedEdgePoint = Utils.SnapToGround(randomEdgePoint, space, []);
+
             if (snappedEdgePoint is Vector3 edgePoint) {
                 Transform3D transform = Transform3D.Identity;
                 transform.Origin = edgePoint;
@@ -76,11 +80,14 @@ public partial class Terrain : Node3D {
         // X: between globalMinX and globalMaxX
         // Z: maxZ, but with -HalfOfOffset and +HalfOfOffset
         for (int i = 0; i < instanceCount / 4; i++) {
-            float randomX = MathUtils.GetRandomFloatRange(randomInstance, globalMinX, globalMaxX);
-            double randomZ = MathUtils.GetRandomFloatRange(randomInstance, lowerMaxZ, upperMaxZ);
+            float randomX = Utils.GetRandomFloatRange(randomInstance, globalMinX, globalMaxX);
+            double randomZ = Utils.GetRandomFloatRange(randomInstance, lowerMaxZ, upperMaxZ);
 
             Vector3 randomEdgePoint = new((float)randomX, 5f, (float)randomZ);
-            Vector3? snappedEdgePoint = SnapToGround(randomEdgePoint);
+
+            var space = GetWorld3D().DirectSpaceState;
+            Vector3? snappedEdgePoint = Utils.SnapToGround(randomEdgePoint, space, []);
+
             if (snappedEdgePoint is Vector3 edgePoint) {
                 Transform3D transform = Transform3D.Identity;
                 transform.Origin = edgePoint;
@@ -90,11 +97,14 @@ public partial class Terrain : Node3D {
         }
 
         for (int i = 0; i < instanceCount / 4; i++) {
-            float randomX = MathUtils.GetRandomFloatRange(randomInstance, lowerMinX, upperMinX);
-            double randomZ = MathUtils.GetRandomFloatRange(randomInstance, globalMinZ, globalMaxZ);
+            float randomX = Utils.GetRandomFloatRange(randomInstance, lowerMinX, upperMinX);
+            double randomZ = Utils.GetRandomFloatRange(randomInstance, globalMinZ, globalMaxZ);
 
             Vector3 randomEdgePoint = new((float)randomX, 5f, (float)randomZ);
-            Vector3? snappedEdgePoint = SnapToGround(randomEdgePoint);
+
+            var space = GetWorld3D().DirectSpaceState;
+            Vector3? snappedEdgePoint = Utils.SnapToGround(randomEdgePoint, space, []);
+
             if (snappedEdgePoint is Vector3 edgePoint) {
                 Transform3D transform = Transform3D.Identity;
                 transform.Origin = edgePoint;
@@ -104,11 +114,14 @@ public partial class Terrain : Node3D {
         }
 
         for (int i = 0; i < instanceCount / 4; i++) {
-            float randomX = MathUtils.GetRandomFloatRange(randomInstance, lowerMaxX, upperMaxX);
-            double randomZ = MathUtils.GetRandomFloatRange(randomInstance, globalMinZ, globalMaxZ);
+            float randomX = Utils.GetRandomFloatRange(randomInstance, lowerMaxX, upperMaxX);
+            double randomZ = Utils.GetRandomFloatRange(randomInstance, globalMinZ, globalMaxZ);
 
             Vector3 randomEdgePoint = new((float)randomX, 5f, (float)randomZ);
-            Vector3? snappedEdgePoint = SnapToGround(randomEdgePoint);
+
+            var space = GetWorld3D().DirectSpaceState;
+            Vector3? snappedEdgePoint = Utils.SnapToGround(randomEdgePoint, space, []);
+
             if (snappedEdgePoint is Vector3 edgePoint) {
                 Transform3D transform = Transform3D.Identity;
                 transform.Origin = edgePoint;
@@ -118,8 +131,8 @@ public partial class Terrain : Node3D {
         }
 
         for (int i = 0; i < instanceCount; i++) {
-            float randomScaleValue = MathUtils.GetRandomFloatRange(randomInstance, MinScaleValue, MaxScalueValue);
-            float randomRotationValue = MathUtils.GetRandomFloatRange(randomInstance, MinRotationValue, MaxRotationValue);
+            float randomScaleValue = Utils.GetRandomFloatRange(randomInstance, MinScaleValue, MaxScalueValue);
+            float randomRotationValue = Utils.GetRandomFloatRange(randomInstance, MinRotationValue, MaxRotationValue);
 
             Transform3D existingTransform = treeMeshes.Multimesh.GetInstanceTransform(i);
 
@@ -131,22 +144,4 @@ public partial class Terrain : Node3D {
         }
     }
 
-    public Vector3? SnapToGround(Vector3 position) {
-        var space = GetWorld3D().DirectSpaceState;
-
-        Vector3 start = position + Vector3.Up * 200.0f;
-        Vector3 end = position + Vector3.Down * 200.0f;
-
-        PhysicsRayQueryParameters3D queryParameters = new() {
-            From = start,
-            To = end
-        };
-
-        var rayCastResult = space.IntersectRay(queryParameters);
-
-        if (rayCastResult.TryGetValue("position", out Variant position2)) {
-            return (Vector3)position2;
-        }
-        return null;
-    }
 }

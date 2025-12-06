@@ -1,3 +1,4 @@
+using agame.Player;
 using Godot;
 using Godot.Collections;
 
@@ -11,6 +12,8 @@ public partial class UiManager : Control {
     [Export]
     public Label CurrentObjectiveLabel { get; set; }
 
+    // TODO: this thing is making a mess in our codebase, it should be private, and methods can only request to change the interactlabel, but
+    // UiManager will decide whether to accept these requests, e.g. if player is in build mode requests are denied, depending on the type of request change
     [Export]
     public Label InteractLabel { get; set; }
 
@@ -25,7 +28,7 @@ public partial class UiManager : Control {
         Instance = this;
         CurrentObjectiveLabel.Text = GameManager.GetCurrentObjectiveDescription(GameManager.Instance.CurrentObjective);
 
-        for (int i = 0; i < Player.Player.HotbarSize; i++) {
+        for (int i = 0; i < PlayerInventory.HotbarSize; i++) {
             HotbarSlotTextures.Add(GetNode<TextureRect>($"/root/World/CanvasLayer/UiRoot/Hotbar/Slot{i + 1}"));
             ItemPreviewSlotTextures.Add(GetNode<TextureRect>($"/root/World/CanvasLayer/UiRoot/Hotbar/Slot{i + 1}/ItemPreview"));
         }

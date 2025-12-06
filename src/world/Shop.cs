@@ -55,7 +55,6 @@ public partial class Shop : Node3D {
     }
 
     private void OnItemSelected(long index) {
-        GD.Print($"new item selected: {_selectedGameItem} index {index}");
         _selectedGameItem = _shopItems[(int)index];
         UpdateBuyAndSellButtonStates();
     }
@@ -88,7 +87,7 @@ public partial class Shop : Node3D {
         }
 
         Player.Player.Instance.UpdateCoin(-price);
-        Player.Player.Instance.TryPlaceItemInHotbar(_selectedGameItem);
+        Player.Player.Instance.Inventory.TryPlaceItemInHotbar(_selectedGameItem);
         UpdateUserOwnLabelOfSelectedItem();
 
         if (_selectedGameItem is BuildItem buildItem && buildItem.Type == BuildItem.BuildItemType.GrowPlot && GameManager.Instance.CurrentObjective == GameManager.GameObjective.BuyFirstPlot) {
@@ -100,12 +99,11 @@ public partial class Shop : Node3D {
 
     private void OnSellButtonClick() {
         if (_selectedGameItem is PlantItem plantItem) {
-            GD.Print("Player trying to sell a plant");
-            (PlantItem, int)? itemFromHotbar = Player.Player.Instance.GetPlantItemByType(plantItem.Type);
+            (PlantItem, int)? itemFromHotbar = Player.Player.Instance.Inventory.GetPlantItemByType(plantItem.Type);
             if (itemFromHotbar is (PlantItem item, int index)) {
                 float sellPrice = item.SellPrice;
                 Player.Player.Instance.UpdateCoin(sellPrice);
-                Player.Player.Instance.RemoveItemFromHotbar(index);
+                Player.Player.Instance.Inventory.RemoveItemFromHotbar(index);
 
                 UpdateUserOwnLabelOfSelectedItem();
 
@@ -116,15 +114,13 @@ public partial class Shop : Node3D {
                 UpdateBuyAndSellButtonStates();
             }
         }
-        GD.Print("Player trying to sell something else than a plant");
     }
 
     private void OnBodyEntered(Node3D body) {
-        if (!body.IsInGroup("player")) return;
+        if (!body.IsInGroup("player") || Player.Player.Instance.InBuildMode) return;
 
         GD.Print("player has entered shop range!");
         if (GameManager.Instance.CurrentObjective == GameManager.GameObjective.GrowFirstPlant) {
-            GD.Print("current objective is growfirstplant, ignoring player entered shop range");
             return;
         }
 
@@ -134,9 +130,8 @@ public partial class Shop : Node3D {
     }
 
     public void OnBodyExit(Node3D body) {
-        if (!body.IsInGroup("player")) return;
+        if (!body.IsInGroup("player") || Player.Player.Instance.InBuildMode) return;
 
-        GD.Print("player has exited shop range!");
         _playerInRange = false;
         UiManager.Instance.InteractLabel.Visible = false;
 
@@ -146,7 +141,7 @@ public partial class Shop : Node3D {
     }
 
     private void HandleInteractionWithShop() {
-        if (!_playerInRange) {
+        if (!_playerInRange || Player.Player.Instance.InBuildMode) {
             return;
         }
 
@@ -169,12 +164,12 @@ public partial class Shop : Node3D {
     private int UpdateUserOwnLabelOfSelectedItem() {
         // TODO: if we add a new item type, we should get an error here so we automatically know we have to update this method
         if (_selectedGameItem is PlantItem plantItem) {
-            int playerOwnCount = Player.Player.Instance.GetPlayerOwnCountForPlantItemByType(plantItem.Type);
+            int playerOwnCount = Player.Player.Instance.Inventory.GetPlayerOwnCountForPlantItemByType(plantItem.Type);
             _playerOwningCountLabel.Text = $"You have: {playerOwnCount}";
             return playerOwnCount;
         }
         else if (_selectedGameItem is BuildItem buildItem) {
-            int playerOwnCount = Player.Player.Instance.GetPlayerOwnCountnForBuildItemByType(buildItem.Type);
+            int playerOwnCount = Player.Player.Instance.Inventory.GetPlayerOwnCountnForBuildItemByType(buildItem.Type);
             _playerOwningCountLabel.Text = $"You have: {playerOwnCount}";
             return playerOwnCount;
         }
